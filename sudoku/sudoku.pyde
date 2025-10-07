@@ -50,8 +50,7 @@ def check_rule(board,row,col,num):
             return False
         
     #check box 3x3
-    pos_box_x = col//3
-    pos_box_y = row//3
+
     
     box_start_row = (row // 3) * 3
     box_start_col = (col // 3) * 3
@@ -141,11 +140,11 @@ def show():
                     stroke(0)
                     fill(0)
                     text(grid[i][j], width/18*2*j+(width/18), height/18*2*i+(height/18))
-            if grid[i][j] == 0 and status == 3:    
-                fill(255, 0, 0)  
-                noStroke()
-                rect(j * cell_w, i * cell_h, cell_w, cell_h)
-                stroke(0)
+            #if grid[i][j] == 0 and status == 3:    
+            #    fill(255, 0, 0)  
+            #    noStroke()
+            #    rect(j * cell_w, i * cell_h, cell_w, cell_h)
+            #    stroke(0)
 def interface():
     background(200)
     fill(0)
@@ -264,11 +263,14 @@ def keyPressed():
         if (row, col) in entry_cell:
             grid[row][col] = 0
     elif key == ENTER:
-        status = 3
-        correct_cell = []
-        for r, c in entry_cell:
-            if grid[r][c] == answer[r][c]:
-                correct_cell.append((r, c))
+        if (status == 2):
+            status = 3
+            correct_cell = []
+            for r, c in entry_cell:
+                if grid[r][c] == answer[r][c]:
+                    correct_cell.append((r, c))
+        else:
+            status = 2
     elif key == 's':
         print("save")
         save_game()
