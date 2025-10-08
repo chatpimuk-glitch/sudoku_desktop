@@ -18,25 +18,25 @@ load = False
 
 def draw_table():
     strokeWeight(3)
-    line(0,height/3,width,height/3)
-    line(0,height/3*2,width,height/3*2)
+    line(0,height/3,width/2,height/3)
+    line(0,height/3*2,width/2,height/3*2)
     
-    line(width/3,0,width/3,height)
-    line(width/3*2,0,width/3*2,height)
+    line(width/2/3,0,width/2/3,height)
+    line(width/2/3*2,0,width/2/3*2,height)
     strokeWeight(1)
-    line(0,height/9,width,height/9)
-    line(0,height/9*2,width,height/9*2)
-    line(0,height/9*4,width,height/9*4)
-    line(0,height/9*5,width,height/9*5)
-    line(0,height/9*7,width,height/9*7)
-    line(0,height/9*8,width,height/9*8)
+    line(0,height/9,width/2,height/9)
+    line(0,height/9*2,width/2,height/9*2)
+    line(0,height/9*4,width/2,height/9*4)
+    line(0,height/9*5,width/2,height/9*5)
+    line(0,height/9*7,width/2,height/9*7)
+    line(0,height/9*8,width/2,height/9*8)
     
-    line(width/9,0,width/9,height)
-    line(width/9*2,0,width/9*2,height)
-    line(width/9*4,0,width/9*4,height)
-    line(width/9*5,0,width/9*5,height)
-    line(width/9*7,0,width/9*7,height)
-    line(width/9*8,0,width/9*8,height)
+    line(width/2/9,0,width/2/9,height)
+    line(width/2/9*2,0,width/2/9*2,height)
+    line(width/2/9*4,0,width/2/9*4,height)
+    line(width/2/9*5,0,width/2/9*5,height)
+    line(width/2/9*7,0,width/2/9*7,height)
+    line(width/2/9*8,0,width/2/9*8,height)
 
 def check_rule(board, row, col, num):
     # check row
@@ -109,7 +109,7 @@ def show():
         for j in range(9):
             fill(0)
             textSize(20)
-            cell_w = width / 9
+            cell_w = width/2 / 9
             cell_h = height / 9
 
             if selected_cell:
@@ -153,23 +153,28 @@ def show():
                     text(grid[i][j], j * cell_w + cell_w / 2, i * cell_h + cell_h / 2)
 
 def interface():
-    background(200)
-    fill(0)
-    textSize(100)
-    text("sudoku",(width-300)/2,150)
-    textSize(50)
-    text("new game",(width-200)/2,height-400)
-    text("load game",(width-200)/2,height-200)
-    
-    line(width/2-120,height-450,width/2+125,height-450)
-    line(width/2-120,height-380,width/2+125,height-380)
-    line(width/2-120,height-450,width/2-120,height-380)
-    line(width/2+125,height-450,width/2+125,height-380)
-    
-    line(width/2-120,height-250,width/2+125,height-250)
-    line(width/2-120,height-180,width/2+125,height-180)
-    line(width/2-120,height-250,width/2-120,height-180)
-    line(width/2+125,height-250,width/2+125,height-180)
+    if(status == 1):
+        background(200)
+        fill(0)
+        textSize(100)
+        text("sudoku",(width/2-300)/2,150)
+        textSize(50)
+        text("new game",(width/2-200)/2,height-400)
+        text("load game",(width/2-200)/2,height-200)
+        
+        line(width/2/2-120,height-450,width/2/2+125,height-450)
+        line(width/2/2-120,height-380,width/2/2+125,height-380)
+        line(width/2/2-120,height-450,width/2/2-120,height-380)
+        line(width/2/2+125,height-450,width/2/2+125,height-380)
+        
+        line(width/2/2-120,height-250,width/2/2+125,height-250)
+        line(width/2/2-120,height-180,width/2/2+125,height-180)
+        line(width/2/2-120,height-250,width/2/2-120,height-180)
+        line(width/2/2+125,height-250,width/2/2+125,height-180)
+    if(status == 3):
+        fill(0)
+        textSize(100)
+        text("YOU WIN",(width/2-300)/2,150)
 def load_game():
     global answer, grid, entry_cell, status
 
@@ -239,15 +244,15 @@ def mousePressed():
     if (status==1):
         x = mouseX
         y = mouseY
-        if(width/2-120<x<width/2+125 and height-450<y<height-380):
+        if(width/2/2-120<x<width/2/2+125 and height-450<y<height-380):
             print("new")
             status = 2
-        elif(width/2-120<x<width/2+125 and height-250<y<height-180):
+        elif(width/2/2-120<x<width/2/2+125 and height-250<y<height-180):
             print("load")
             load_game()
             
     if(status != 1):
-        cell_w = width / 9
+        cell_w = width/2 / 9
         cell_h = height / 9
         col = int(mouseX // cell_w)
         row = int(mouseY // cell_h)
@@ -277,6 +282,8 @@ def keyPressed():
     if key == 's':
         print("save")
         save_game()
+    if grid == answer:
+        status = 3
 
 
                 
@@ -286,16 +293,21 @@ def setup():
         while(temp in num):
             temp = int(random(1,10))
         num.append(temp)
-    size(900,900)
+    size(1800,900)
     generate_game()
     print(answer)
 def draw():
+    
     if (status == 1):
         interface()
     else:
         background(250)
+        line(width/2,0,width/2,height)
         show()
-        draw_table()      
+        draw_table()     
+        fill(0)
+        textSize(35)
+        text("Flow chart",width/2+100,20) 
     
     
     
