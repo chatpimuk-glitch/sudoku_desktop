@@ -38,28 +38,29 @@ def draw_table():
     line(width/9*7,0,width/9*7,height)
     line(width/9*8,0,width/9*8,height)
 
-def check_rule(board,row,col,num):
-    #check row
+def check_rule(board, row, col, num):
+    # check row
     for i in range(9):
-        if num == board[row][i]:
+        if i != col and board[row][i] == num:
             return False
-        
-    #check column
-    for i in range(9):
-        if num == board[i][col]:
-            return False
-        
-    #check box 3x3
 
-    
+    # check column
+    for i in range(9):
+        if i != row and board[i][col] == num:
+            return False
+
+    # check 3x3 box
     box_start_row = (row // 3) * 3
     box_start_col = (col // 3) * 3
-
     for i in range(3):
         for j in range(3):
-            if board[box_start_row + i][box_start_col + j] == num:
+            r = box_start_row + i
+            c = box_start_col + j
+            if (r != row or c != col) and board[r][c] == num:
                 return False
+
     return True
+
 
 def find_entry_cell(board):
     for i in range(9):
@@ -110,41 +111,47 @@ def show():
             textSize(20)
             cell_w = width / 9
             cell_h = height / 9
-            
+
+            if selected_cell:
+                sel_i, sel_j = selected_cell
+                if i == sel_i or j == sel_j:
+                    fill(220)
+                    noStroke()
+                    rect(j * cell_w, i * cell_h, cell_w, cell_h)
+                    stroke(0)
+
             if (i, j) in correct_cell:
                 fill(102, 255, 102)
                 noStroke()
                 rect(j * cell_w, i * cell_h, cell_w, cell_h)
                 stroke(0)
-            
-            if (i, j) == selected_cell :
-                fill(180, 180, 180)
-                noStroke()
-                rect(j * cell_w, i * cell_h, cell_w, cell_h)
-                stroke(0)
 
-                
             if grid[i][j] != 0:
-                if((i, j) not in entry_cell):
-                    fill(204, 255, 255)
+                if (i, j) not in entry_cell:
+                    fill(180, 220, 255)
                     noStroke()
                     rect(j * cell_w, i * cell_h, cell_w, cell_h)
                     stroke(0)
-                fill(0)
-                text(grid[i][j], width/18*2*j+(width/18), height/18*2*i+(height/18))
+                else:
+                    if(not check_rule(grid,i,j,grid[i][j])):
+                        fill(180, 0, 0)
+                        noStroke()
+                        rect(j * cell_w, i * cell_h, cell_w, cell_h)
+                        stroke(0)
 
-                if(status == 3 and grid[i][j] != answer[i][j]):
+            if grid[i][j] != 0:
+                fill(0)
+                textAlign(CENTER, CENTER)
+                text(grid[i][j], j * cell_w + cell_w / 2, i * cell_h + cell_h / 2)
+
+                if grid[i][j] != answer[i][j]:
                     fill(255, 0, 0)
                     noStroke()
                     rect(j * cell_w, i * cell_h, cell_w, cell_h)
                     stroke(0)
                     fill(0)
-                    text(grid[i][j], width/18*2*j+(width/18), height/18*2*i+(height/18))
-            #if grid[i][j] == 0 and status == 3:    
-            #    fill(255, 0, 0)  
-            #    noStroke()
-            #    rect(j * cell_w, i * cell_h, cell_w, cell_h)
-            #    stroke(0)
+                    text(grid[i][j], j * cell_w + cell_w / 2, i * cell_h + cell_h / 2)
+
 def interface():
     background(200)
     fill(0)
@@ -262,16 +269,12 @@ def keyPressed():
     elif key == '0' or key == DELETE:
         if (row, col) in entry_cell:
             grid[row][col] = 0
-    elif key == ENTER:
-        if (status == 2):
-            status = 3
-            correct_cell = []
-            for r, c in entry_cell:
-                if grid[r][c] == answer[r][c]:
-                    correct_cell.append((r, c))
-        else:
-            status = 2
-    elif key == 's':
+
+    correct_cell = []
+    for r, c in entry_cell:
+        if grid[r][c] == answer[r][c]:
+            correct_cell.append((r, c))
+    if key == 's':
         print("save")
         save_game()
 
