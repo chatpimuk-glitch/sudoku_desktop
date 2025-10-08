@@ -157,20 +157,20 @@ def interface():
         background(200)
         fill(0)
         textSize(100)
-        text("sudoku",(width/2-300)/2,150)
+        text("sudoku",(width-300)/2,150)
         textSize(50)
-        text("new game",(width/2-200)/2,height-400)
-        text("load game",(width/2-200)/2,height-200)
+        text("new game",(width-200)/2,height-400)
+        text("load game",(width-200)/2,height-200)
         
-        line(width/2/2-120,height-450,width/2/2+125,height-450)
-        line(width/2/2-120,height-380,width/2/2+125,height-380)
-        line(width/2/2-120,height-450,width/2/2-120,height-380)
-        line(width/2/2+125,height-450,width/2/2+125,height-380)
+        line(width/2-120,height-450,width/2+125,height-450)
+        line(width/2-120,height-380,width/2+125,height-380)
+        line(width/2-120,height-450,width/2-120,height-380)
+        line(width/2+125,height-450,width/2+125,height-380)
         
-        line(width/2/2-120,height-250,width/2/2+125,height-250)
-        line(width/2/2-120,height-180,width/2/2+125,height-180)
-        line(width/2/2-120,height-250,width/2/2-120,height-180)
-        line(width/2/2+125,height-250,width/2/2+125,height-180)
+        line(width/2-120,height-250,width/2+125,height-250)
+        line(width/2-120,height-180,width/2+125,height-180)
+        line(width/2-120,height-250,width/2-120,height-180)
+        line(width/2+125,height-250,width/2+125,height-180)
     if(status == 3):
         fill(0)
         textSize(100)
@@ -244,10 +244,10 @@ def mousePressed():
     if (status==1):
         x = mouseX
         y = mouseY
-        if(width/2/2-120<x<width/2/2+125 and height-450<y<height-380):
+        if(width/2-120<x<width/2+125 and height-450<y<height-380):
             print("new")
             status = 2
-        elif(width/2/2-120<x<width/2/2+125 and height-250<y<height-180):
+        elif(width/2-120<x<width/2+125 and height-250<y<height-180):
             print("load")
             load_game()
             
@@ -285,7 +285,45 @@ def keyPressed():
     if grid == answer:
         status = 3
 
+#-------------------------------------------------------------flow-chart------------------------------------------------------
+def flow_s(x,y): 
+    fill(0,255,0) 
+    ellipse(x,y,110,50) 
+    fill(0) 
+    text("start",x-35,y+10) 
+    textSize(35) 
 
+def flow_o(x, y, t):
+    w = textWidth(t) + 20 
+    h = 40 
+    fill(0, 255, 0) 
+    rect(x, y, w, h)
+    fill(0) 
+    textSize(35) 
+    textAlign(LEFT, CENTER) 
+    text(t, x + 10, y + h / 2) 
+
+def flow_c(x, y, t): 
+    textSize(20) 
+    w = textWidth(t) + 140 
+    h = 70 
+    stroke(0) 
+    strokeWeight(2) 
+    left_x = x - w / 2 
+    right_x = x + w / 2 
+    top_y = y - h / 2 
+    bottom_y = y + h / 2 
+    fill(0, 255, 0) 
+    beginShape() 
+    vertex(x, top_y)
+    vertex(right_x, y) 
+    vertex(x, bottom_y) 
+    vertex(left_x, y) 
+    endShape(CLOSE) 
+    fill(0) 
+    textAlign(CENTER, CENTER) 
+    textSize(35) 
+    text(t, x, y)
                 
 def setup():
     for i in range(9):
