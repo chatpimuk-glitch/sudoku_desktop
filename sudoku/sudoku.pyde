@@ -151,7 +151,14 @@ def show():
                     stroke(0)
                     fill(0)
                     text(grid[i][j], j * cell_w + cell_w / 2, i * cell_h + cell_h / 2)
-
+                    
+    if grid == answer:
+        fill(255)
+        rect(width-300, height-100, 170, 50)
+        fill(0)
+        textSize(50)
+        text("restart",width-215,height-80)    
+                    
 def interface():
     if(status == 1):
         background(200)
@@ -259,7 +266,10 @@ def mousePressed():
             else:
                 selected_cell = (-1, -1) 
 
-    
+    if grid == answer and width-300<mouseX<width-130 and height-100<mouseY<height-50:
+        print("restart")
+        restart_game()
+        
 def keyPressed():
     global status, correct_cell
     if selected_cell == (-1, -1):
@@ -279,8 +289,31 @@ def keyPressed():
     if key == 's':
         print("save")
         save_game()
-    if grid == answer:
+    if grid == answer :
         status = 3
+        
+def restart_game():
+    global grid, entry_cell, correct_cell, selected_cell, status, num
+
+    grid = []
+    for i in range(9):
+        row = []
+        for j in range(9):
+            row.append(0)
+        grid.append(row)
+
+    entry_cell = []
+    correct_cell = []
+    selected_cell = (-1, -1)
+    num = []
+
+    while len(num) < 9:
+        temp = int(random(1, 10))
+        if temp not in num:
+            num.append(temp)
+
+    generate_game()
+    status = 2
 
 #-------------------------------------------------------------flow-chart------------------------------------------------------
 def flow_s(x,y): 
@@ -443,6 +476,7 @@ def draw():
         textSize(35)
         text("Flow chart",width/2+100,20) 
         flowchart(width*3/4-20,60)
+        
     
     
     
